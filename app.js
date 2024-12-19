@@ -7,6 +7,9 @@ const notFoundMiddleare=require("./middleware/not-found");
 const errorHandlingMiddleare=require("./middleware/error-handler");
 const morgan=require("morgan");
 
+// auth routes
+const authRouter=require("./routes/authRoutes");
+
 
 const PORT = process.env.PORT || 5000;
 
@@ -16,6 +19,8 @@ app.use(morgan("dev"));
 app.get("/",(req,res,next)=>{
     res.send("Mega E-commerce API")
 })
+
+app.use("/api/v1/auth",authRouter);
 
 app.use(notFoundMiddleare);
 app.use(errorHandlingMiddleare);
