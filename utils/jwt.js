@@ -5,9 +5,20 @@ const jwt = require("jsonwebtoken");
 ->When you call this function, you need to pass an object with payload key as the argument
 */
 const createJWT = ({ payload }) => {
-  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_LIFETIME });
+  return jwt.sign(payload, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_LIFETIME,
+  });
 };
 
 const verifyJWT = ({ token }) => jwt.verify(token, process.env.JWT_SECRET);
 
-module.exports = { createJWT, verifyJWT };
+const attachCookiesToRespnse = ({ res, tokenPayload }) => {
+  const token = createJWT({ payload: tokenPayload });
+  const thirtyDays = 1000 * 60 * 60 * 24 * 30;
+  res.cookie("token", token, {
+    httpOnly: true,
+    expiresIn: new Date(Date.now() + thirtyDays),
+  });
+};
+
+module.exports = { createJWT, verifyJWT,attachCookiesToRespnse };
