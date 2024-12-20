@@ -23,12 +23,22 @@ const register = async (req, res, next) => {
     userId: createdUser._id,
   };
   const token = createJWT({payload:tokenPayload});
-  res.status(StatusCodes.CREATED).json({ user: tokenPayload, token });
+/*
+->Instead of sending the jwt token with the response, we send it using a cookie
+*/   
+const thirtyDays=1000*60*60*24*30;
+  res.cookie("token",token,{
+    httpOnly:true,
+    expiresIn:new Date(Date.now()+thirtyDays)
+  })
+  res.status(StatusCodes.CREATED).json({ user: tokenPayload});
 };
 const login = (req, res, next) => {
   res.send("Login User");
 };
 const logout = (req, res, next) => {
+    // console.log(req.cookies);
+    
   res.send("Logout User");
 };
 

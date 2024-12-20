@@ -6,6 +6,7 @@ const connectDB = require("./db/connect");
 const notFoundMiddleare=require("./middleware/not-found");
 const errorHandlingMiddleare=require("./middleware/error-handler");
 const morgan=require("morgan");
+const cookeParser=require("cookie-parser");
 
 // auth routes
 const authRouter=require("./routes/authRoutes");
@@ -15,6 +16,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(morgan("dev"));
+app.use(cookeParser());  //with every incoming req from the client, we get a cookie
 
 app.get("/",(req,res,next)=>{
     res.send("Mega E-commerce API")
