@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(morgan("dev"));
-app.use(cookeParser());  //with every incoming req from the client, we get a cookie
+app.use(cookeParser(process.env.JWT_SECRET));  //with every incoming req from the client, we get a cookie
 
 app.get("/",(req,res,next)=>{
     res.send("Mega E-commerce API")
