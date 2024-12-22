@@ -3,6 +3,7 @@ const StatusCodes = require("http-status-codes");
 const {NotFoundError}=require('../errors')
 
 const getAllUsers =async (req, res, next) => {
+    console.log(req.user);
   const users =await User.find({ role: "user" }, "-password");
   res.status(StatusCodes.OK).json({ users });
 };
