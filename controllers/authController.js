@@ -33,14 +33,14 @@ const login = async (req, res, next) => {
   }
   //   check if the correct email has been provided or not
   const user = await User.findOne({ email });
-  
+
   if (!user) {
     throw new UnauthenticatedError(
       "The user does not exist....Please enter valid credentials"
     );
   }
   // now check if the password is correct or not
-  const passwordIsValid =await user.comparePassword(password);
+  const passwordIsValid = await user.comparePassword(password);
   if (!passwordIsValid) {
     throw new UnauthenticatedError(
       "Password Invalid....Please enter a valid password"
@@ -52,16 +52,20 @@ const login = async (req, res, next) => {
     role: user.role,
     userId: user._id,
   };
-//   now send this as a token inside a cookie
-attachCookiesToRespnse({res,tokenPayload});
-res.status(StatusCodes.OK).json({user:tokenPayload})
+  //   now send this as a token inside a cookie
+  attachCookiesToRespnse({ res, tokenPayload });
+  res.status(StatusCodes.OK).json({ user: tokenPayload });
 };
 
-
 const logout = (req, res, next) => {
-  console.log(req.signedCookies);
-
-  res.send("Logout User");
+  const thirtyDays = 1000 * 60 * 60 * 24 * 30;
+  res.clearCookie("token", {
+    httpOnly: true,
+    expiresIn: new Date(Date.now() + thirtyDays),
+    secure: process.env.NODE_ENV === "production",
+    signed: true,
+  });
+  res.status(StatusCodes.OK).json({ msg: "User Logged out" });
 };
 
 module.exports = {
