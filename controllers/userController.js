@@ -1,10 +1,18 @@
-const getAllUsers = (req, res, next) => {
-  res.send("Get All Users");
+const User = require("../models/User");
+const StatusCodes = require("http-status-codes");
+const {NotFoundError}=require('../errors')
+
+const getAllUsers =async (req, res, next) => {
+  const users =await User.find({ role: "user" }, "-password");
+  res.status(StatusCodes.OK).json({ users });
 };
 
-const getSingleUser = (req, res, next) => {
-    console.log(req.params);
-  res.send("Get single user");
+const getSingleUser =async (req, res, next) => {
+  const user=await User.findOne({_id:req.params.id},"-password");
+  if(!user){
+    throw new NotFoundError("User Does Not Exist🤔");
+  }
+  res.status(StatusCodes.OK).json({user});
 };
 
 const showCurrentUser = (req, res, next) => {
@@ -20,9 +28,9 @@ const updateUserPassword = (req, res, next) => {
 };
 
 module.exports = {
-    getAllUsers,
-    getSingleUser,
-    showCurrentUser,
-    updateUser,
-    updateUserPassword
+  getAllUsers,
+  getSingleUser,
+  showCurrentUser,
+  updateUser,
+  updateUserPassword,
 };
