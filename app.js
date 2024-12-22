@@ -8,8 +8,11 @@ const errorHandlingMiddleare=require("./middleware/error-handler");
 const morgan=require("morgan");
 const cookeParser=require("cookie-parser");
 
+
 // auth routes
 const authRouter=require("./routes/authRoutes");
+// userRoutes
+const userRoutes=require("./routes/userRoutes");
 
 
 const PORT = process.env.PORT || 5000;
@@ -23,6 +26,7 @@ app.get("/",(req,res,next)=>{
 })
 
 app.use("/api/v1/auth",authRouter);
+app.use("/api/v1/users",userRoutes);
 
 app.use(notFoundMiddleare);
 app.use(errorHandlingMiddleare);
