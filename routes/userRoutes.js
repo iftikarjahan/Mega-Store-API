@@ -7,14 +7,16 @@ const {
   updateUser,
   updateUserPassword,
 } = require("../controllers/userController");
-const {authMiddleware}=require("../middleware/authentication");
+const {authMiddleware,authorizationMiddleware}=require("../middleware/authentication");
 
 
-router.route("/").get(authMiddleware,getAllUsers);
+router.route("/").get(authMiddleware,authorizationMiddleware("owner"),getAllUsers);  //this is only for admin
 router.route("/showCurrentUser").get(showCurrentUser);
 router.route("/updateUser").post(updateUser);
 router.route("/updateUserPassword").post(updateUserPassword);
 router.route("/:id").get(authMiddleware,getSingleUser);
 
 module.exports=router;
+
+
 

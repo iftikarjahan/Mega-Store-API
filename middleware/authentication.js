@@ -1,5 +1,6 @@
 const myErrors = require("../errors");
 const verifyToken = require("../utils").verifyJWT;
+const { UnauthorizedError } = require("../errors");
 
 const authMiddleware = (req, res, next) => {
   const token = req.signedCookies.token;
@@ -21,6 +22,22 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
+const authorizationMiddleware = (...rest) => {
+  // console.log(req);
+
+  // if(req.user.role!=="admin"){
+  //     throw new UnauthorizedError("User not allowed to get all users🤬");
+  // }
+  // next();
+  return (req, res, next) => {
+    if (!rest.includes(req.user.role)) {
+      throw new UnauthorizedError("User not allowed to get all users🤬");
+    }
+    next();
+  };
+};
+
 module.exports = {
   authMiddleware,
+  authorizationMiddleware,
 };
