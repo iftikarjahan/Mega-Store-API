@@ -41,6 +41,7 @@ const authorizationMiddleware = (...rest) => {
   };
 };
 
+
 module.exports = {
   authMiddleware,
   authorizationMiddleware,
