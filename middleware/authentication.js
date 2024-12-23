@@ -1,3 +1,7 @@
+/*
+    THE WORK OF AUTH MIDDLEWARE IS TO CHECK WHETHER THE USER IS LOGGED IN OR NOT
+*/ 
+
 const myErrors = require("../errors");
 const verifyToken = require("../utils").verifyJWT;
 const { UnauthorizedError } = require("../errors");

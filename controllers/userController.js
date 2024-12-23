@@ -17,7 +17,11 @@ const getSingleUser =async (req, res, next) => {
 };
 
 const showCurrentUser = (req, res, next) => {
-  res.send("Show Current User");
+    /*
+    ->Once you have checked the user is logged in, you need to just pass the user info
+    ->This data about the current user could be used in the frontend
+    */ 
+   res.status(StatusCodes.OK).json({user:req.user});
 };
 
 const updateUser = (req, res, next) => {
